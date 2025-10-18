@@ -3,17 +3,17 @@ import XCTest
 
 final class appleMyCoreTests: XCTestCase {
     func testHeartRateSampleEncoding() throws {
-        let sample = HeartRateSample(bpm: 72)
+        let sample = HRSample(bpm: 72)
         let data = try JSONEncoder().encode(sample)
-        let decoded = try JSONDecoder().decode(HeartRateSample.self, from: data)
+        let decoded = try JSONDecoder().decode(HRSample.self, from: data)
         XCTAssertEqual(decoded.bpm, sample.bpm)
     }
 
     func testHealthEngineStubSave() throws {
-        let engine = HealthEngine()
+        let engine = HealthEngineImpl()
         let expectation = XCTestExpectation(description: "save")
-        let sample = HeartRateSample(bpm: 60)
-        engine.saveHeartRate(sample) { success, error in
+        let sample = HRSample(bpm: 60)
+        engine.saveHR(sample) { success, error in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             expectation.fulfill()
@@ -22,7 +22,7 @@ final class appleMyCoreTests: XCTestCase {
     }
 
     func testBLEStubStartStop() {
-        let source = BLEHeartRateSource()
+        let source = BLEHeartRateSourceImpl()
         source.start()
         source.stop()
         XCTAssertTrue(true)
