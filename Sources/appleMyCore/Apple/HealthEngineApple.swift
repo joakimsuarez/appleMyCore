@@ -17,6 +17,28 @@ public final class HealthEngineApple: HealthEngineProtocol {
         }
     }
 
+    public func fetchLatestHRVSample(completion: @escaping (HRVSample?) -> Void) {
+        guard let hrvType = HKQuantityType.quantityType(forIdentifier: .heartRateVariabilitySDNN) else {
+            completion(nil)
+            return
+        }
+
+        let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+        let query = HKSampleQuery(sampleType: hrvType, predicate: nil, limit: 1, sortDescriptors: [sort]) { _, samples, _ in
+            guard let sample = samples?.first as? HKQuantitySample else {
+                completion(nil)
+                return
+            }
+
+            let value = sample.quantity.doubleValue(for: HKUnit.secondUnit(with: .milli))
+            let timestamp = sample.endDate.timeIntervalSince1970
+            let hrvSample = HRVSample(timestamp: timestamp, value: value, source: .appleHealth)
+            completion(hrvSample)
+        }
+
+        store.execute(query)
+    }
+    
     public func saveHR(_ sample: HRSample, completion: @escaping (Bool, Error?) -> Void) {
         // Implementera med HKQuantitySample för heart rate
         completion(true, nil) // stub
