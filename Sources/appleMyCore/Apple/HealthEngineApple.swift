@@ -31,8 +31,8 @@ public final class HealthEngineApple: HealthEngineProtocol {
             }
 
             let value = sample.quantity.doubleValue(for: HKUnit.secondUnit(with: .milli))
-            let timestamp = sample.endDate.timeIntervalSince1970
-            let hrvSample = HRVSample(timestamp: timestamp, value: value, source: .appleHealth)
+            let timestamp = sample.endDate
+            let hrvSample = HRVSample(timestamp: timestamp, value: value, source: ".appleHealth")
             completion(hrvSample)
         }
 

@@ -1,9 +1,8 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.2
 import PackageDescription
 
 var products: [Product] = [
-    .library(name: "appleMyCore", targets: ["appleMyCore"]),
-    .executable(name: "appleMyCoreCLI", targets: ["appleMyCoreCLI"])
+    .library(name: "appleMyCore", targets: ["appleMyCore"])
 ]
 
 var targets: [Target] = [
@@ -11,6 +10,20 @@ var targets: [Target] = [
         name: "appleMyCore",
         path: "Sources/appleMyCore"
     ),
+    .testTarget(
+        name: "appleMyCoreTests",
+        dependencies: ["appleMyCore"],
+        path: "Tests/appleMyCoreTests"
+    )
+]
+
+// Lägg till CLI endast på Windows
+#if os(Windows)
+products += [
+    .executable(name: "appleMyCoreCLI", targets: ["appleMyCoreCLI"])
+]
+
+targets += [
     .executableTarget(
         name: "appleMyCoreCLI",
         dependencies: ["appleMyCore"],
@@ -21,37 +34,6 @@ var targets: [Target] = [
         linkerSettings: [
             .unsafeFlags(["-Xlinker", "-subsystem:console"])
         ]
-    ),
-    .testTarget(
-        name: "appleMyCoreTests",
-        dependencies: ["appleMyCore"],
-        path: "Tests/appleMyCoreTests"
-    )
-]
-
-// Lägg till Apple-specifika targets om vi inte är på Windows
-#if !os(Windows)
-products += [
-    .executable(name: "iPhoneApp", targets: ["iPhoneApp"]),
-    .executable(name: "WatchApp", targets: ["WatchApp"]),
-    .executable(name: "WatchHRVComplication", targets: ["WatchHRVComplication"])
-]
-
-targets += [
-    .executableTarget(
-        name: "iPhoneApp",
-        dependencies: ["appleMyCore"],
-        path: "Sources/iPhoneApp"
-    ),
-    .executableTarget(
-        name: "WatchApp",
-        dependencies: ["appleMyCore"],
-        path: "Sources/WatchApp"
-    ),
-    .executableTarget(
-        name: "WatchHRVComplication",
-        dependencies: ["appleMyCore"],
-        path: "Sources/WatchHRVComplication"
     )
 ]
 #endif
@@ -66,3 +48,4 @@ let package = Package(
     products: products,
     targets: targets
 )
+
