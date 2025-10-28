@@ -1,43 +1,6 @@
 // swift-tools-version:6.2
 import PackageDescription
 
-var products: [Product] = [
-    .library(name: "appleMyCore", targets: ["appleMyCore"])
-]
-
-var targets: [Target] = [
-    .target(
-        name: "appleMyCore",
-        path: "Sources/appleMyCore"
-    ),
-    .testTarget(
-        name: "appleMyCoreTests",
-        dependencies: ["appleMyCore"],
-        path: "Tests/appleMyCoreTests"
-    )
-]
-
-// Lägg till CLI endast på Windows
-#if os(Windows)
-products += [
-    .executable(name: "appleMyCoreCLI", targets: ["appleMyCoreCLI"])
-]
-
-targets += [
-    .executableTarget(
-        name: "appleMyCoreCLI",
-        dependencies: ["appleMyCore"],
-        path: "Sources/appleMyCoreCLI",
-        swiftSettings: [
-            .define("WINDOWS", .when(platforms: [.windows]))
-        ],
-        linkerSettings: [
-            .unsafeFlags(["-Xlinker", "-subsystem:console"])
-        ]
-    )
-]
-#endif
-
 let package = Package(
     name: "applemycore",
     platforms: [
@@ -45,7 +8,38 @@ let package = Package(
         .watchOS(.v10),
         .macOS(.v13)
     ],
-    products: products,
-    targets: targets
+    products: [
+        .library(name: "appleMyCore", targets: ["appleMyCore"]),
+        // CLI endast på Windows
+        .executable(name: "appleMyCoreCLI", targets: ["appleMyCoreCLI"])
+    ],
+    dependencies: [
+        .package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "7.0.0")
+        //.package(url: "https://github.com/drmohundro/SWXMLHash.git", from: "6.0.0")
+    ],
+    targets: [
+        .target(
+            name: "appleMyCore",
+            dependencies: ["SWXMLHash"],
+            path: "Sources/appleMyCore",
+            resources: [.process("Resources")]
+        ),
+        .testTarget(
+            name: "appleMyCoreTests",
+            dependencies: ["appleMyCore"],
+            path: "Tests/appleMyCoreTests"
+        ),
+        // CLI endast på Windows
+        .executableTarget(
+            name: "appleMyCoreCLI",
+                dependencies: ["appleMyCore", "SWXMLHash"],
+            path: "Sources/appleMyCoreCLI",
+            swiftSettings: [
+                .define("WINDOWS", .when(platforms: [.windows]))
+            ],
+            linkerSettings: [
+                .unsafeFlags(["-Xlinker", "-subsystem:console"])
+            ]
+        )
+    ]
 )
-
