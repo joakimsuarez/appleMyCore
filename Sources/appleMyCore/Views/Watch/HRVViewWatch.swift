@@ -1,0 +1,66 @@
+//
+//  HRVView.swift
+//
+//
+
+#if canImport(SwiftUI)
+import SwiftUI
+
+public struct HRVViewWatch: View {
+    #Preview {
+        HRVViewWatch()
+    }
+    public init() {}
+
+    @State private var hrvSample: HRVSample?
+	@State private var isLoading = true
+    private var engine: HealthEngineImpl	 = HealthEngineImpl()
+
+
+    public var body: some View {
+        VStack(spacing: 16) {
+            Text("Heart Rate Variability")
+                .font(.title2)
+                .bold()
+
+            if isLoading {
+                ProgressView("Laddar HRV...")
+            } else if let sample = hrvSample {
+                VStack(spacing: 8) {
+                    Text("HRV: \(Int(sample.value)) ms")
+                    Text("Tidpunkt: \(formatted(sample.timestamp))")
+                        .foregroundColor(.gray)
+                }
+            } else {
+                Text("Ingen HRV-data tillgänglig")
+                    .foregroundColor(.red)
+            }
+
+            Button("Uppdatera") {
+                loadHRV()
+            }
+        }
+        .padding()
+        .onAppear {
+            loadHRV()
+        }
+    }
+
+    private func loadHRV() {
+        isLoading = true
+        engine.fetchLatestHRVSample { sample in
+            DispatchQueue.main.async {
+                self.hrvSample = sample
+                self.isLoading = false
+            }
+        }
+    }
+
+    private func formatted(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
+}
+#endif
