@@ -10,8 +10,7 @@ import appleMyCore
 struct WatchApp: App {
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-            HRVView() // från Sources/WatchApp
+            MainViewWatch() // från appleMyCore/Sources/Watch
         }
     }
 }

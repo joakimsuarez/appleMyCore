@@ -6,18 +6,19 @@
 #if canImport(SwiftUI)
 import SwiftUI
 
-public struct HRVViewWatch: View {
+public struct MainViewWatch: View {
     #Preview {
-        HRVViewWatch()
+        MainViewWatch()
     }
     public init() {}
 
-    @State private var hrvSample: HRVSample?
+    @State private var sample: HealthDataSample?
 	@State private var isLoading = true
-    private var engine: HealthEngineImpl	 = HealthEngineImpl()
+//    private var engine: HealthEngineImpl	 = HealthEngineImpl()
 
 
     public var body: some View {
+/*
         VStack(spacing: 16) {
             Text("Heart Rate Variability")
                 .font(.title2)
@@ -25,7 +26,7 @@ public struct HRVViewWatch: View {
 
             if isLoading {
                 ProgressView("Laddar HRV...")
-            } else if let sample = hrvSample {
+            } else if let sample = HealthDataSample {
                 VStack(spacing: 8) {
                     Text("HRV: \(Int(sample.value)) ms")
                     Text("Tidpunkt: \(formatted(sample.timestamp))")
@@ -44,17 +45,19 @@ public struct HRVViewWatch: View {
         .onAppear {
             loadHRV()
         }
-    }
+*/
+ }
 
     private func loadHRV() {
         isLoading = true
-        engine.fetchLatestHRVSample { sample in
+/*        engine.fetchLatestHRVSample { sample in
             DispatchQueue.main.async {
                 self.hrvSample = sample
                 self.isLoading = false
             }
         }
-    }
+*/
+ }
 
     private func formatted(_ date: Date) -> String {
         let formatter = DateFormatter()

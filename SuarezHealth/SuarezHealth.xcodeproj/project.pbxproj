@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D22F248E2EAD611900DE47BA /* appleMyCore in Frameworks */ = {isa = PBXBuildFile; productRef = D22F248D2EAD611900DE47BA /* appleMyCore */; };
+		D2332F292EB29EAF0043C7AA /* appleMyCore in Frameworks */ = {isa = PBXBuildFile; productRef = D2332F282EB29EAF0043C7AA /* appleMyCore */; };
+		D2332F2C2EB29F360043C7AA /* appleMyCore in Frameworks */ = {isa = PBXBuildFile; productRef = D2332F2B2EB29F360043C7AA /* appleMyCore */; };
 		D29E12FB2EABF69A008A83D9 /* WatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D29E12FA2EABF69A008A83D9 /* WatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D29E13102EABF800008A83D9 /* appleMyCore in Frameworks */ = {isa = PBXBuildFile; productRef = D29E130F2EABF800008A83D9 /* appleMyCore */; };
 		D29E13122EABF811008A83D9 /* appleMyCore in Frameworks */ = {isa = PBXBuildFile; productRef = D29E13112EABF811008A83D9 /* appleMyCore */; };
@@ -60,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2332F292EB29EAF0043C7AA /* appleMyCore in Frameworks */,
 				D22F248E2EAD611900DE47BA /* appleMyCore in Frameworks */,
 				D29E13102EABF800008A83D9 /* appleMyCore in Frameworks */,
 			);
@@ -69,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2332F2C2EB29F360043C7AA /* appleMyCore in Frameworks */,
 				D29E13122EABF811008A83D9 /* appleMyCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +122,7 @@
 			packageProductDependencies = (
 				D29E130F2EABF800008A83D9 /* appleMyCore */,
 				D22F248D2EAD611900DE47BA /* appleMyCore */,
+				D2332F282EB29EAF0043C7AA /* appleMyCore */,
 			);
 			productName = WatchAppRunner;
 			productReference = D29E12ED2EABF699008A83D9 /* iPhoneApp.app */;
@@ -141,6 +146,7 @@
 			name = WatchApp;
 			packageProductDependencies = (
 				D29E13112EABF811008A83D9 /* appleMyCore */,
+				D2332F2B2EB29F360043C7AA /* appleMyCore */,
 			);
 			productName = "WatchAppRunner Watch App";
 			productReference = D29E12FA2EABF69A008A83D9 /* WatchApp.app */;
@@ -174,7 +180,7 @@
 			mainGroup = D29E12E42EABF698008A83D9;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				D22F248C2EAD611900DE47BA /* XCLocalSwiftPackageReference "../../appleMyCore" */,
+				D2332F2A2EB29F360043C7AA /* XCLocalSwiftPackageReference "../../appleMyCore" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D29E12EE2EABF699008A83D9 /* Products */;
@@ -511,7 +517,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		D22F248C2EAD611900DE47BA /* XCLocalSwiftPackageReference "../../appleMyCore" */ = {
+		D2332F2A2EB29F360043C7AA /* XCLocalSwiftPackageReference "../../appleMyCore" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../appleMyCore;
 		};
@@ -519,6 +525,14 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		D22F248D2EAD611900DE47BA /* appleMyCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = appleMyCore;
+		};
+		D2332F282EB29EAF0043C7AA /* appleMyCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = appleMyCore;
+		};
+		D2332F2B2EB29F360043C7AA /* appleMyCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = appleMyCore;
 		};

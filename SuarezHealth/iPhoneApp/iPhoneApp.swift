@@ -10,8 +10,7 @@ import appleMyCore // din Swift	PM-modul
 struct iPhoneApp: App {
     var body: some Scene {
         WindowGroup {
-            //ContentView()
-            HRVView() // från Sources/WatchApp
+            MainViewiPhone() // från appleMyCore/Sources/iPhone
         }
     }
 }
