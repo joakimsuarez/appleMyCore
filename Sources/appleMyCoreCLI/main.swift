@@ -20,13 +20,34 @@ struct Main {
         let toDate = parseDateArg(flag: "--to", args: args)
 
         let engine = HealthEngineImpl()
+        // Async därfär behövs completion handler
         engine.fetchSamples(ofType: type, fromDate: fromDate, toDate: toDate) { samples in
             if samples.isEmpty {
                 print("Inga matchande \(type)-samples hittades.")
-            } else {
-                for sample in samples {
-                    print("\(type): \(Int(sample.value)) @ \(formatted(sample.timestamp)) från \(sample.source)")
+                return
+            }
+            // deictionary array där string är nyckel och en array med double =[:] betyder skapa en ny tom deictionary
+            var dailyHRVValues: [String: [Double]] = [:]
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+
+            for sample in samples {
+                guard sample.type == "HeartRateVariabilitySDNN",
+                    sample.value > 0 else {
+                    continue
                 }
+                let dayKey = formatter.string(from: sample.timestamp)
+                dailyHRVValues[dayKey, default: []].append(sample.value)
+                //dailyHRV[dayKey, default: 0.0] += sample.value
+                print("\(type): \(Int(sample.value)) @ \(formatted(sample.timestamp)) från \(sample.source)")
+            }
+
+            for (day, values) in dailyHRVValues.sorted(by: { $0.key < $1.key }) {
+                let min = values.min() ?? 0
+                let max = values.max() ?? 0
+                let avg = values.reduce(0, +) / Double(values.count)
+
+                print("📅 \(day): min \(Int(min)) ms, medel \(Int(avg)) ms, max \(Int(max)) ms (\(values.count) samples)")
             }
         }
 
