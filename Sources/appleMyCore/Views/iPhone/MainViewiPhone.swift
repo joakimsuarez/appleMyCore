@@ -2,27 +2,33 @@
 //  HRVViewiPhone.swift
 //
 //
-
-
 #if canImport(SwiftUI)
-#Preview {
-    MainViewiPhone()
-        .padding()
-        .previewDevice("iPhone 15 Pro")
-}
-
 import SwiftUI
+import Charts
 
-
+struct MainViewiPhone_previews: PreviewProvider {
+        static var previews: some View {
+            MainViewiPhone()
+//        .padding()
+//        .previewDevice("iPhone 15 Pro")
+        }
+}
 public struct MainViewiPhone: View {
     public init() {}
     @State private var sample: HealthDataSample?
 	@State private var isLoading = true
-    private var engine: HealthEngineImpl	 = HealthEngineImpl()
+    private var engine: HealthEngineImpl = HealthEngineImpl()
 
+    let values: [Double] = [45, 52, 48, 60, 55, 62, 58, 65, 70, 68]
+    
+    var dataPoints: [HRVPoint] {
+        values.enumerated().map { HRVPoint(index: $0.offset, value: $0.element) }
+    }
     public var body: some View {
         VStack(spacing: 16) {
-            Text("Heart Data")
+            Text("Suarez Health")
+                .font(.largeTitle.bold())
+            Text("HRV")
                 .font(.title2)
                 .bold()
 
@@ -31,9 +37,23 @@ public struct MainViewiPhone: View {
             } else if let sample = sample {
                 
                 
-                
-                
-                
+                VStack(spacing: 8) {
+                Chart {
+                    ForEach(dataPoints) { point in
+                        LineMark(
+                            x: .value("Index", point.index),
+                            y: .value("HRV", point.value)
+                        )
+                        .interpolationMethod(.catmullRom)
+                        .foregroundStyle(.blue)
+                    }
+                }
+                .frame(height: 300)
+                .padding()
+                .chartXAxisLabel("Date")
+                .chartYAxisLabel("HRV (ms)")
+                .navigationTitle("HRV Trend")
+                }
                 VStack(spacing: 8) {
                     Text("HRV: \(Int(sample.value)) ms")
                     Text("Tidpunkt: \(formatted(sample.timestamp))")
@@ -55,15 +75,6 @@ public struct MainViewiPhone: View {
         }
     }
 
-
-    private func formatted(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
-    }
-    
-    
     
     
     private func loadHealthData() {
@@ -112,14 +123,24 @@ public struct MainViewiPhone: View {
             }
         }
     }
-
     private func parseDate(_ string: String) -> Date? {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.timeZone = TimeZone.current
         return formatter.date(from: string)
     }
-    
-
+        
+    private func formatted(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
+    struct HRVPoint: Identifiable {
+        let id = UUID()
+        let index: Int
+        let value: Double
+    }
 }
+
 #endif
